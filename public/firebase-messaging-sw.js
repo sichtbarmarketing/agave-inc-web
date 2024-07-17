@@ -25,6 +25,9 @@ firebase.initializeApp({
 	measurementId: "G-16700MM36E",
 });
 
+// Retrieve firebase messaging
+const messaging = firebase.messaging();
+
 /*
     If you would like to customize notifications that are received in the
     background (Web app is closed or not in browser focus) then you should
