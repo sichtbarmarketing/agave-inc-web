@@ -17,7 +17,7 @@ import AgaveLayout from "layouts/AgaveLayout";
 
 firebaseClient;
 
-console.log(firebaseClient.name)
+console.log("Firebase client name: ", firebaseClient.name)
 initAuth();
 
 //Binding events.

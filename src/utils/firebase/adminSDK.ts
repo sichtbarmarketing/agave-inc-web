@@ -7,7 +7,7 @@ const firebaseAdminInitConfig = {
         // Private ket must not be accessible client-side
         // Using JSON to handle newline problems when storing the key as a secret in Vercel. See:
         // https://github.com/vercel/vercel/issues/749#issuecomment-707515089
-        privateKey: process.env.FIREBASE_PRIVATE_KEY ? JSON.parse(process.env.FIREBASE_PRIVATE_KEY) : undefined,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY ? process.env.FIREBASE_PRIVATE_KEY : undefined,
     },
     databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL as string,
     storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET as string,

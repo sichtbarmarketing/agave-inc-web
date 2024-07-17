@@ -50,6 +50,9 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
     // State for currently selected chat & it's toggle function
     const [chatId, setChatId] = useState<string | null>(null);
     const toggleChat = (cId?: string) => { setChatId(cId ?? null) };
+    // Log the chat id if in development mode
+    if (process.env.NODE_ENV === 'development') console.log("Current Chat ID: ", chatId);
+
 
     // Toggle state for Dialog components
     const [createDialog, toggleCreateDialog] = useToggle(false);
@@ -89,6 +92,17 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
             /* FIXME: This should be a Cloud Function, triggered whenever a new Message doc is added */
             await updateDoc(chatDoc, {
                 lastMessage: { sender: message.sender, text: message.text, timestamp: Timestamp.now() }
+            });
+
+            // Call the internal API /api/chat/messageSent.ts to send a notification
+            const idToken = await AuthUser.getIdToken();
+            const res = await fetch('/api/chat/messageSent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: idToken as string,
+                },
+                body: JSON.stringify({ chatId }),
             });
         } catch (e) {
             console.error('An Error occurred while sending message!', e);
