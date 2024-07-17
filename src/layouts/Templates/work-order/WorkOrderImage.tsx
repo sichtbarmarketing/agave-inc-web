@@ -3,14 +3,14 @@ import { ImageListItem } from '@mui/material';
 import useSWR from "swr";
 import axios from "axios";
 
-import { AuthUserContext } from "next-firebase-auth";
+import { User } from "next-firebase-auth";
 
 import Loading from '@public/assets/images/loading.gif';
 
 type WorkOrderImageProps = {
     imgId: string,
     imageFile: { id: string, link: string },
-    user: AuthUserContext
+    user: User
 }
 
 

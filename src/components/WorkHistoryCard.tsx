@@ -1,7 +1,7 @@
 import { FC, ReactNode, useMemo } from 'react';
 import useSWR from "swr";
 import axios from "axios";
-import { AuthUserContext } from "next-firebase-auth";
+import { User } from "next-firebase-auth";
 import { format } from "date-fns";
 import { TemplateID } from "../../pages/work-history/[propertyId]"; // FIXME: this should be placed somewhere else
 import { Box, Card, CardActionArea, CardContent, Chip, Divider, Skeleton, Stack } from '@mui/material';
@@ -25,7 +25,7 @@ const swrOptions = {
 
 interface WorkHistoryCardProps {
     formId: string, propertyId: string, lastUpdated: string, templateId: TemplateID | string,
-    user: AuthUserContext, searchStr: string,
+    user: User, searchStr: string,
 }
 
 type CardTemplateProps = {

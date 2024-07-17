@@ -6,11 +6,11 @@ import axios from "axios";
 import PauseCircleOutline from "@mui/icons-material/PauseCircleOutline";
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { AuthUserContext } from "next-firebase-auth";
+import { User } from "next-firebase-auth";
 
 type DownloadDialogProps = {
     formId: string | null;
-    authUser: AuthUserContext;
+    authUser: User;
     onClose: () => void;
 }
 

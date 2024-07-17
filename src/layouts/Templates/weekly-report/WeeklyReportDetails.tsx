@@ -2,7 +2,7 @@ import { FC } from 'react';
 import useSWR from "swr";
 import axios from "axios";
 import { useToggle } from "hooks/useToggle";
-import { AuthUserContext } from "next-firebase-auth";
+import { User } from "next-firebase-auth";
 import Loading from "@public/assets/images/loading.gif";
 import { ImageListItem, IconButton } from "@mui/material";
 import { WeeklyReportDetails } from "hooks/useWeeklyReport";
@@ -12,7 +12,7 @@ import SettingsDialog from "components/SettingsDialogs/SettingsDialog";
 type WeeklyReportDetailsProps = {
     image: WeeklyReportDetails['image']
     text: WeeklyReportDetails['text']
-    user: AuthUserContext
+    user: User
 }
 const WeeklyReportDetails: FC<WeeklyReportDetailsProps> = ({ image, text, user }: WeeklyReportDetailsProps) => {
 

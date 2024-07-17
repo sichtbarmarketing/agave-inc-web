@@ -1,11 +1,11 @@
 import { init } from 'next-firebase-auth';
-import type { InitConfig, CustomInitConfig } from "next-firebase-auth";
+import type { ConfigInput, CustomInitConfig } from "next-firebase-auth";
 
 const TWELVE_DAYS_IN_MS = 12 * 60 * 60 * 24 * 1000
 
 // Module augmentation for custom InitConfig
 declare module 'next-firebase-auth' {
-    interface CustomInitConfig extends InitConfig {
+    interface CustomInitConfig extends ConfigInput {
         firebaseAdminInitConfig?: {
             credential: {
                 projectId: string

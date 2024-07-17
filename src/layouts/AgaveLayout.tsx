@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { usePathname } from 'next/navigation'
 
-import { AuthUser } from "next-firebase-auth";
+import { User } from "next-firebase-auth";
 import { Box, BoxProps, Stack, Button, ButtonProps, styled } from '@mui/material';
 import { Span } from 'components/Typography';
 import { NextLinkComposed } from "components/Link";
@@ -60,7 +60,7 @@ const AgaveNavigations: { key: number, title: string, NavIcon: any, href: string
     { key: 4, title: 'Settings', NavIcon: SettingsOutlinedIcon, href: '/settings' },
 ]
 
-interface AgaveLayoutProps { user?: AuthUser, children?: ReactNode, bgMain?: BoxProps['bgcolor'] }
+interface AgaveLayoutProps { user?: User, children?: ReactNode, bgMain?: BoxProps['bgcolor'] }
 const AgaveLayout: FC<AgaveLayoutProps> = ({ bgMain = 'grey.300', user, children }: AgaveLayoutProps) => {
 
     const pathname = usePathname();

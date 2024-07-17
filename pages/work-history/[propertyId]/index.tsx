@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState, SyntheticEvent, ChangeEvent, createContext, useContext } from "react";
-import { useUser, withUser, AuthAction, AuthUserContext } from 'next-firebase-auth';
+import { useUser, withUser, AuthAction, User } from 'next-firebase-auth';
 
 import { getStorage } from "firebase/storage";
 import { subDays, formatISO } from "date-fns";
@@ -39,7 +39,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 type PropertyPageProps = { };
 type DateRange = { start: Date, end: Date };
-type WorkHistoryListProps = { propertyId?: string, AuthUser: AuthUserContext };
+type WorkHistoryListProps = { propertyId?: string, AuthUser: User };
 
 /** FIXME: this should not be static **/
 export enum TemplateID {
