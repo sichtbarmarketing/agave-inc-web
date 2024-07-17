@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React, { useCallback, useState } from "react";
 import clientLogIn from '@firebaseUtils/client/logIn';
-import { AuthAction, withAuthUser } from 'next-firebase-auth'
+import { AuthAction, withUser } from 'next-firebase-auth'
 import { useFormik } from "formik";
 import * as yup from "yup";
 
@@ -122,7 +122,7 @@ const formSchema = yup.object().shape({
     email: yup.string().email("invalid email").required("Email is required"),
 });
 
-export default withAuthUser({
+export default withUser({
     whenAuthed: AuthAction.REDIRECT_TO_APP,
     whenAuthedBeforeRedirect: AuthAction.SHOW_LOADER,
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,

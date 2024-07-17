@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useState } from 'react';
-import { useAuthUser, withAuthUser, AuthAction } from "next-firebase-auth";
+import { useUser, withUser, AuthAction } from "next-firebase-auth";
 import {
     getFirestore,
     collection,
@@ -45,7 +45,7 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
     const app = getApp()
     const db = getFirestore();
     const auth = getAuth();
-    const AuthUser = useAuthUser();
+    const AuthUser = useUser();
 
     // State for currently selected chat & it's toggle function
     const [chatId, setChatId] = useState<string | null>(null);
@@ -212,7 +212,7 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
     );
 }
 
-export default withAuthUser<ChatIndexProps>({
+export default withUser<ChatIndexProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

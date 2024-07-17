@@ -2,7 +2,7 @@ import React from "react";
 import { NextPage } from "next";
 import { getAuth } from "firebase/auth";
 import AuthLayout from "layouts/AuthLayout";
-import { useAuthUser, withAuthUser, AuthAction } from "next-firebase-auth";
+import { useUser, withUser, AuthAction } from "next-firebase-auth";
 import { useToggle } from "hooks/useToggle";
 import { Box, Stack, List, Button } from "@mui/material";
 
@@ -35,7 +35,7 @@ import SecurityUpdateWarningOutlinedIcon from "@mui/icons-material/SecurityUpdat
 const auth = getAuth();
 type SettingsPageProps = {};
 const SettingsPage: NextPage<SettingsPageProps> = () => {
-	const AuthUser = useAuthUser();
+	const AuthUser = useUser();
 
     // Console log the AuthUser object when in development mode
     if (process.env.NODE_ENV === "development") {
@@ -172,7 +172,7 @@ const SettingsPage: NextPage<SettingsPageProps> = () => {
 	);
 };
 
-export default withAuthUser<SettingsPageProps>({
+export default withUser<SettingsPageProps>({
 	whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
 	whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
 	whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useRouter } from "next/router";
-import { useAuthUser, withAuthUser, AuthAction } from 'next-firebase-auth';
+import { useUser, withUser, AuthAction } from 'next-firebase-auth';
 import { Skeleton, Box, Stack, Button, Divider, ImageList } from "@mui/material";
 import useSWR from "swr";
 import axios from "axios";
@@ -21,7 +21,7 @@ type WeeklyReportProps = {};
 const WeeklyReportPage: FC<WeeklyReportProps> = () => {
 
     const router = useRouter();
-    const AuthUser = useAuthUser();
+    const AuthUser = useUser();
 
     const formId = router.query.formId;
     const url: string = `api/history/${formId}`; // FIXME: this fetch DOES NOT request a form PDF
@@ -68,7 +68,7 @@ const WeeklyReportPage: FC<WeeklyReportProps> = () => {
     );
 };
 
-export default withAuthUser<WeeklyReportProps>({
+export default withUser<WeeklyReportProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

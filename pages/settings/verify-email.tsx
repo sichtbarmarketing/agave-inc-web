@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import React, { useState, Fragment } from "react";
 
 import { getAuth, sendEmailVerification } from "firebase/auth";
-import { AuthAction, withAuthUser } from "next-firebase-auth";
+import { AuthAction, withUser } from "next-firebase-auth";
 import firebaseClient from "@firebaseUtils/firebaseClient";
 
 import Loader from "components/Loader";
@@ -84,7 +84,7 @@ const VerifyEmail: NextPage<VerifyEmailProps> = () => {
     );
 }
 
-export default withAuthUser<VerifyEmailProps>({
+export default withUser<VerifyEmailProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

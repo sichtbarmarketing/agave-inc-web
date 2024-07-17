@@ -9,7 +9,7 @@ import enUS from 'date-fns/locale/en-US';
 import TodayIcon from '@mui/icons-material/Today';
 
 import AuthLayout from "layouts/AuthLayout";
-import { useAuthUser, withAuthUser, withAuthUserTokenSSR, AuthAction } from 'next-firebase-auth';
+import { useUser, withUser, withUserTokenSSR, AuthAction } from 'next-firebase-auth';
 import PropertiesList from "layouts/PropertiesList";
 
 import Loader from "components/Loader";
@@ -27,7 +27,7 @@ type DashboardPageProps = { }
 const DashboardPage: NextPage = () => {
 
     const propertiesURL = '/api/properties';
-    const AuthUser = useAuthUser();
+    const AuthUser = useUser();
 
     const fetcher = useSWR(AuthUser.id ? propertiesURL: null, (async () => {
         const token = await AuthUser.getIdToken();
@@ -65,7 +65,7 @@ const DashboardPage: NextPage = () => {
 
 
 
-export default withAuthUser<DashboardPageProps>({
+export default withUser<DashboardPageProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import {AuthAction, useAuthUser, withAuthUser} from "next-firebase-auth";
+import {AuthAction, useUser, withUser} from "next-firebase-auth";
 import axios from "axios";
 import useSWR from "swr";
 import { format } from 'date-fns';
@@ -32,7 +32,7 @@ const ViewHistoryPage: NextPage<HistoryIdProps> = ({}) => {
     const { formId, exportId } = router.query
     const url: string = `api/history/${formId}`;
 
-    const AuthUser = useAuthUser(); // according to next-firebase-auth, the user is guaranteed to be authenticated
+    const AuthUser = useUser(); // according to next-firebase-auth, the user is guaranteed to be authenticated
     const fetcher = useSWR(AuthUser ? url : null, (async () => {
         const token = await AuthUser.getIdToken();
         return await axios.get(url, { baseURL: '/', headers: { Authorization: token }, params: { exportId: exportId } } )
@@ -82,7 +82,7 @@ const ViewHistoryPage: NextPage<HistoryIdProps> = ({}) => {
     );
 };
 
-export default withAuthUser<HistoryIdProps>({
+export default withUser<HistoryIdProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

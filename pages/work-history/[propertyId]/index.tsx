@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState, SyntheticEvent, ChangeEvent, createContext, useContext } from "react";
-import { useAuthUser, withAuthUser, AuthAction, AuthUserContext } from 'next-firebase-auth';
+import { useUser, withUser, AuthAction, AuthUserContext } from 'next-firebase-auth';
 
 import { getStorage } from "firebase/storage";
 import { subDays, formatISO } from "date-fns";
@@ -61,7 +61,7 @@ const PropertiesPage: NextPage<PropertyPageProps> = () => {
     const storage = getStorage();
 
     const router = useRouter();
-    const AuthUser = useAuthUser();
+    const AuthUser = useUser();
     const propertyId = router.query.propertyId;
     const url: string = `api/properties/${propertyId}`;
 
@@ -209,7 +209,7 @@ function WorkHistoryAlert({ Icon, title, text }: {Icon: any, title: string, text
     )
 }
 
-export default withAuthUser<PropertyPageProps>({
+export default withUser<PropertyPageProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

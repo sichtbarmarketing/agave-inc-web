@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import React, { useState, SyntheticEvent } from "react";
-import { useAuthUser, withAuthUser, withAuthUserTokenSSR, AuthAction } from 'next-firebase-auth';
+import { useUser, withUser, withUserTokenSSR, AuthAction } from 'next-firebase-auth';
 
 import { Container, Stack, Box } from '@mui/material';
 
@@ -22,7 +22,7 @@ const WorkHistoryPage: NextPage<WorkHistoryPageProps> = () => {
 
     const propertiesURL = '/api/properties';
 
-    const AuthUser = useAuthUser();
+    const AuthUser = useUser();
 
     const propertiesFetcher = useSWR(AuthUser.id ? propertiesURL: null, (async () => {
         const token = await AuthUser.getIdToken();
@@ -44,7 +44,7 @@ const WorkHistoryPage: NextPage<WorkHistoryPageProps> = () => {
     )
 }
 
-export default withAuthUser<WorkHistoryPageProps>({
+export default withUser<WorkHistoryPageProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

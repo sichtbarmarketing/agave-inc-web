@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import React, { Fragment, useEffect, useState } from "react";
-import { AuthAction, withAuthUser, useAuthUser } from "next-firebase-auth";
+import { AuthAction, withUser, useUser } from "next-firebase-auth";
 import Loader from "components/Loader";
 import ErrorMessage from "components/ErrorMessage";
 import PropertyDialog from "layouts/PropertyDialog";
@@ -16,7 +16,7 @@ const AdminDashboardPage: NextPage<AdminDashboardProps> = ({}) => {
 
     const url = 'api/users';
 
-    const AuthUser = useAuthUser(); // according to next-firebase-auth, the user is guaranteed to be authenticated
+    const AuthUser = useUser(); // according to next-firebase-auth, the user is guaranteed to be authenticated
     const [dialog, setDialog] = useState(false);
     const [user, setUser] = useState<{ uid: string, displayName: string, properties: string[] } | null>(null);
     const [token, setToken] = useState<string | null>(null);
@@ -109,7 +109,7 @@ const AdminDashboardPage: NextPage<AdminDashboardProps> = ({}) => {
     );
 };
 
-export default withAuthUser<AdminDashboardProps>({
+export default withUser<AdminDashboardProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

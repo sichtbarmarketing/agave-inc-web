@@ -7,7 +7,7 @@ import { Build, ChatBubble, Home, Phone } from "@mui/icons-material";
 import Image from "next/image";
 import AnnouncementList from "layouts/AnnouncementList";
 
-import {AuthAction, withAuthUser} from 'next-firebase-auth';
+import {AuthAction, withUser} from 'next-firebase-auth';
 import Loader from 'components/Loader';
 
 type HomePageProps = { }
@@ -59,7 +59,7 @@ const latestActivity = [
     { id: 6, primary: "New message received", Avatar: <ChatBubble/>, date: "December 20, 2022", secondary: "From Carol Escobar" },
 ]
 
-export default withAuthUser<HomePageProps>({
+export default withUser<HomePageProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated

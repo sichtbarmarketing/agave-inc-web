@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
+import { AuthAction, useUser, withUser } from "next-firebase-auth";
 import AuthLayout from "layouts/AuthLayout";
 
 import { Container, Stack, Paper, Box, Divider } from "@mui/material";
@@ -18,7 +18,7 @@ const embed: any = {
 type ContactPageProps = { };
 const ContactPage: NextPage<ContactPageProps> = () => {
 
-    const AuthUser = useAuthUser();
+    const AuthUser = useUser();
 
     return(
         <AuthLayout signedIn={!!(AuthUser.id)} displayName={AuthUser.displayName}>
@@ -62,7 +62,7 @@ const ContactPage: NextPage<ContactPageProps> = () => {
     );
 }
 
-export default withAuthUser<ContactPageProps>({
+export default withUser<ContactPageProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.RENDER, // Page is rendered, even if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.RENDER, // page is rendered, even if the user is not authenticated

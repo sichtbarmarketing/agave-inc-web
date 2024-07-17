@@ -1,6 +1,6 @@
 // import { Fragment, FC, useState, useEffect } from 'react';
 import { NextPage } from "next";
-import { useAuthUser, AuthAction, withAuthUser } from "next-firebase-auth";
+import { useUser, AuthAction, withUser } from "next-firebase-auth";
 
 import { Box, Typography } from "@mui/material";
 import Loader from "components/Loader";
@@ -15,7 +15,7 @@ type HomePageProps = {
 
 const HomePage: NextPage<HomePageProps> = () => {
 
-    const AuthUser = useAuthUser();
+    const AuthUser = useUser();
 
     return(
         <AuthLayout signedIn={!!(AuthUser.id)} displayName={AuthUser.displayName}>
@@ -39,7 +39,7 @@ const HomePage: NextPage<HomePageProps> = () => {
     );
 }
 
-export default withAuthUser<HomePageProps>({
+export default withUser<HomePageProps>({
     whenAuthed: AuthAction.REDIRECT_TO_APP, // User is redirected to dashboard page, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.RENDER, // Renders page, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.RENDER, // Redirect to log-in page, if user is not authenticated

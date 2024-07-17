@@ -1,4 +1,4 @@
-import { AuthAction, withAuthUser } from "next-firebase-auth";
+import { AuthAction, withUser } from "next-firebase-auth";
 import Loader from "components/Loader";
 import { NextPage } from "next";
 import React, { useState } from "react";
@@ -93,7 +93,7 @@ const formSchema = yup.object().shape({
     email: yup.string().email("invalid email").required("Email is required"),
 });
 
-export default withAuthUser({
+export default withUser({
     whenAuthed: AuthAction.REDIRECT_TO_APP,
     whenAuthedBeforeRedirect: AuthAction.SHOW_LOADER,
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,

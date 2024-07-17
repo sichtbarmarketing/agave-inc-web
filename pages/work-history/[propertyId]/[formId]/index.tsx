@@ -4,7 +4,7 @@ import useSWR from "swr";
 import axios from "axios";
 
 import { useWorkOrder, useFormParser } from "hooks/useWorkOrder";
-import { useAuthUser, withAuthUser, AuthAction } from 'next-firebase-auth';
+import { useUser, withUser, AuthAction } from 'next-firebase-auth';
 
 import { Chip, Stack, Box, Paper, ImageList, Divider, Button, useTheme, useMediaQuery } from "@mui/material";
 
@@ -30,7 +30,7 @@ type PropertyFormProps = {}
 const PropertyFormPage: NextPage<PropertyFormProps> = () => {
 
     const router = useRouter();
-    const AuthUser = useAuthUser();
+    const AuthUser = useUser();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -100,7 +100,7 @@ const PropertyFormPage: NextPage<PropertyFormProps> = () => {
     );
 }
 
-export default withAuthUser<PropertyFormProps>({
+export default withUser<PropertyFormProps>({
     whenAuthed: AuthAction.RENDER, // Page is rendered, if the user is authenticated
     whenUnauthedBeforeInit: AuthAction.SHOW_LOADER, // Shows loader, if the user is not authenticated & the Firebase client JS SDK has not yet initialized.
     whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN, // Redirect to log-in page, if user is not authenticated
