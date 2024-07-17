@@ -9,7 +9,7 @@ const getPrivateKey = (): string => {
         process.env.NODE_ENV === 'development'
             ? process.env.FIREBASE_PRIVATE_KEY
             : JSON.parse(process.env.FIREBASE_PRIVATE_KEY as string)
-    if (!privateKey) throw new Error('No private key found in environment variables')
+    if (!privateKey) return '';
     return privateKey;
 }
 
