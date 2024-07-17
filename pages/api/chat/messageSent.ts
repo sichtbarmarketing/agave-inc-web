@@ -73,10 +73,6 @@ const createChatHandler: NextApiHandler = async (
 		// Send a push notification to the recipient using the FCM tokens
 		if (recipientDoc) {
 			const fcmToken = recipientDoc?.tokenFCM;
-			console.log(
-				"🛑 ~ constcreateChatHandler:NextApiHandler= ~ fcmToken:",
-				fcmToken
-			);
 
 			const message = {
 				data: {
