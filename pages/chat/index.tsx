@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useUser, withUser, AuthAction } from "next-firebase-auth";
 import {
 	getFirestore,
@@ -16,6 +16,7 @@ import {
 	CollectionReference,
 	DocumentReference,
 	getDocs,
+	getDoc,
 } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -182,6 +183,34 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
 		return resObj;
 	};
 
+	const updateLastReadTimestamp = async (chatId: string) => {
+		if (!AuthUser.id) return;
+
+		const userDoc = doc(db, "users", AuthUser.id).withConverter(profileConverter);
+		await updateDoc(userDoc, {
+			[`lastRead.${chatId}`]: serverTimestamp(),
+		});
+	};
+
+	const [lastReadTimestamps, setLastReadTimestamps] = useState<{
+		[key: string]: Timestamp;
+	}>({});
+
+	const fetchLastReadTimestamps = useCallback(async () => {
+		if (!AuthUser.id) return;
+
+		const userDoc = doc(db, "users", AuthUser.id).withConverter(profileConverter);
+		const userSnapshot = await getDoc(userDoc);
+		if (userSnapshot.exists()) {
+			const userData = userSnapshot.data();
+			setLastReadTimestamps(userData.lastRead || {});
+		}
+	}, [AuthUser.id]);
+
+	useEffect(() => {
+		fetchLastReadTimestamps();
+	}, [AuthUser.id]);
+
 	/**
 	 * queries collection data for the chat history where the current user (AuthUser.id) is a member
 	 * TODO: Needs Pagination
@@ -232,15 +261,26 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
 							<CreateOutlinedIcon />
 						</Fab>
 					}>
-					{chatsData?.map((chat) => (
+					{chatsData?.map((chat) => {
+                        const lastReadTimestamp = lastReadTimestamps[chat.id];
+						const hasNewMessages = lastReadTimestamp
+							? chat.lastMessage.timestamp > lastReadTimestamp
+							: true;
+
+                        return (
 						<ChatListItem
 							key={chat.id}
 							chat={chat}
 							selected={chatId === chat.id}
 							sent={chat.lastMessage?.sender === AuthUser.id}
-							onClick={() => toggleChat(chat.id)}
+							onClick={() => {
+								toggleChat(chat.id);
+								updateLastReadTimestamp(chat.id);
+								fetchLastReadTimestamps();
+							}}
+                            hasNewMessages={hasNewMessages}
 						/>
-					))}
+					)})}
 				</ChatListContainer>
 				<Stack
 					flex='1 0'

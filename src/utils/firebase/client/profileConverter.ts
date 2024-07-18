@@ -3,7 +3,8 @@ import {
     DocumentReference,
     FirestoreDataConverter,
     QueryDocumentSnapshot, SnapshotOptions,
-    PartialWithFieldValue
+    PartialWithFieldValue,
+    Timestamp
 } from "firebase/firestore";
 
 export type Profile = {
@@ -12,6 +13,9 @@ export type Profile = {
     properties: string[],
     id: string,
     ref: DocumentReference<DocumentData>,
+    lastRead?: {
+        [chatId: string]: Timestamp
+    }
 };
 
 export type NewProfile = Omit<Profile, 'id' | 'ref'>;
@@ -22,6 +26,7 @@ const profileConverter: FirestoreDataConverter<Profile> = {
             displayName: profile.displayName,
             admin: profile.admin,
             properties: profile.properties,
+            lastRead: profile.lastRead,
         };
     },
     fromFirestore(
@@ -35,6 +40,7 @@ const profileConverter: FirestoreDataConverter<Profile> = {
             properties: data.properties,
             id: snapshot.id,
             ref: snapshot.ref,
+            lastRead: data.lastRead,
         };
     },
 };
