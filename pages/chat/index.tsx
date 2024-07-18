@@ -263,9 +263,8 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
 					}>
 					{chatsData?.map((chat) => {
 						const lastReadTimestamp = lastReadTimestamps[chat.id];
-						// @ts-expect-error - seconds is a number
-						const chatLastMessageTimestamp = chat.lastMessage.timestamp
-							?.seconds as number;
+						const chatLastMessageTimestamp = // @ts-expect-error - seconds is a number
+						chat.lastMessage.timestamp?.seconds as number;
 						const hasNewMessages = lastReadTimestamp
 							? chatLastMessageTimestamp > lastReadTimestamp.seconds
 							: false;
