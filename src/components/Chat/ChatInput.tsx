@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, KeyboardEvent } from 'react';
 
 import { Stack, Button, IconButton, Box, BoxProps } from '@mui/material';
 import BazarTextField from "components/Forms/BazarTextField";
@@ -30,6 +30,16 @@ const ChatInput: FC<ChatInputProps & BoxProps> = ({ send, toggleDialog }) => {
         return('message sent!');
     }
 
+    const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter' && e.shiftKey) {
+            e.preventDefault();
+            const target = e.target as HTMLTextAreaElement;
+            send(target.value);
+            target.value = '';
+            values.text = '';
+        }
+    };
+
     // Initializing variables to use within form, provided by useFormik
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
         useFormik({
@@ -51,6 +61,7 @@ const ChatInput: FC<ChatInputProps & BoxProps> = ({ send, toggleDialog }) => {
                                     aria-label="Message" placeholder="Message" name="text" type="text"
                                     onBlur={handleBlur} value={values.text} onChange={handleChange}
                                     error={!!touched.text && !!errors.text} helperText={touched.text && errors.text}
+                                    onKeyDown={handleKeyDown}
                     />
                 </Box>
                 <Box flex={'0 1 auto'}>
