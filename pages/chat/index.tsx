@@ -262,27 +262,29 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
 						</Fab>
 					}>
 					{chatsData?.map((chat) => {
-                        const lastReadTimestamp = lastReadTimestamps[chat.id];
-                        // @ts-expect-error - seconds is a number
-                        const chatLastMessageTimestamp = chat.lastMessage.timestamp?.seconds as number;
+						const lastReadTimestamp = lastReadTimestamps[chat.id];
+						// @ts-expect-error - seconds is a number
+						const chatLastMessageTimestamp = chat.lastMessage.timestamp
+							?.seconds as number;
 						const hasNewMessages = lastReadTimestamp
 							? chatLastMessageTimestamp > lastReadTimestamp.seconds
 							: false;
 
-                        return (
-						<ChatListItem
-							key={chat.id}
-							chat={chat}
-							selected={chatId === chat.id}
-							sent={chat.lastMessage?.sender === AuthUser.id}
-							onClick={() => {
-								toggleChat(chat.id);
-								updateLastReadTimestamp(chat.id);
-								fetchLastReadTimestamps();
-							}}
-                            hasNewMessages={hasNewMessages}
-						/>
-					)})}
+						return (
+							<ChatListItem
+								key={chat.id}
+								chat={chat}
+								selected={chatId === chat.id}
+								sent={chat.lastMessage?.sender === AuthUser.id}
+								onClick={() => {
+									toggleChat(chat.id);
+									updateLastReadTimestamp(chat.id);
+									fetchLastReadTimestamps();
+								}}
+								hasNewMessages={hasNewMessages}
+							/>
+						);
+					})}
 				</ChatListContainer>
 				<Stack
 					flex='1 0'
@@ -300,9 +302,11 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
 						justifyContent='flex-start'
 						alignItems='center'
 						py={1}>
-						<IconButton onClick={() => toggleChat()}>
-							<ArrowBackIcon />
-						</IconButton>
+						{chatId && (
+							<IconButton onClick={() => toggleChat()}>
+								<ArrowBackIcon />
+							</IconButton>
+						)}
 					</Stack>
 					<NoChat display={chatId ? "none" : "block"} />
 					<ChatLog
