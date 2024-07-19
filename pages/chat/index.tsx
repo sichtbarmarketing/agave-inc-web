@@ -43,6 +43,7 @@ import CreateDialog from "components/Chat/CreateDialog";
 
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AgaveLayout from "layouts/AgaveLayout";
 
 type ChatIndexProps = {};
 const ChatIndexPage: NextPage<ChatIndexProps> = () => {
@@ -240,7 +241,7 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
 	);
 
 	return (
-		<>
+		<AgaveLayout>
 			<Stack
 				direction='row'
 				height={"100%"}
@@ -264,7 +265,7 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
 					{chatsData?.map((chat) => {
 						const lastReadTimestamp = lastReadTimestamps[chat.id];
 						const chatLastMessageTimestamp = // @ts-expect-error - seconds is a number
-						chat.lastMessage.timestamp?.seconds as number;
+							chat.lastMessage.timestamp?.seconds as number;
 						const hasNewMessages = lastReadTimestamp
 							? chatLastMessageTimestamp > lastReadTimestamp.seconds
 							: false;
@@ -334,7 +335,7 @@ const ChatIndexPage: NextPage<ChatIndexProps> = () => {
 				limit={profLimit}
 				handleLimit={() => setProfLimit(false)}
 			/>
-		</>
+		</AgaveLayout>
 	);
 };
 

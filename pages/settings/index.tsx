@@ -4,13 +4,13 @@ import { getAuth } from "firebase/auth";
 import AuthLayout from "layouts/AuthLayout";
 import { useUser, withUser, AuthAction } from "next-firebase-auth";
 import { useToggle } from "hooks/useToggle";
-import { Box, Stack, List, Button } from "@mui/material";
+import { Box, Stack, List } from "@mui/material";
 
 import TitleBar from "components/TitleBar";
 import Loader from "components/Loader";
 import UserProfile, { UserProfileItem } from "components/UserProfile";
 import UserSettingsItem from "components/UserSettingsItem";
-import { NextLinkComposed } from "components/Link";
+import AgaveLayout from "layouts/AgaveLayout";
 
 /* SETTINGS DIALOG BOXES */
 import UpdateAvatarDialog from "components/SettingsDialogs/UpdateAvatarDialog";
@@ -37,10 +37,10 @@ type SettingsPageProps = {};
 const SettingsPage: NextPage<SettingsPageProps> = () => {
 	const AuthUser = useUser();
 
-    // Console log the AuthUser object when in development mode
-    if (process.env.NODE_ENV === "development") {
-        console.log(AuthUser);
-    }
+	// Console log the AuthUser object when in development mode
+	if (process.env.NODE_ENV === "development") {
+		console.log(AuthUser);
+	}
 
 	const [updateAvatar, toggleAvatar] = useToggle(false);
 	const [updateName, toggleName] = useToggle(false);
@@ -53,122 +53,124 @@ const SettingsPage: NextPage<SettingsPageProps> = () => {
 	const [pwa, togglePwa] = useToggle(false);
 
 	return (
-		<AuthLayout signedIn={!!AuthUser.id} displayName={AuthUser.displayName}>
-			<Box m={1} mb={3}>
-				<TitleBar
-					TitleIcon={SettingsOutlinedIcon}
-					Title={"My Profile"}
-					sx={{ mx: 1 }}
+		<AgaveLayout>
+			<AuthLayout signedIn={!!AuthUser.id} displayName={AuthUser.displayName}>
+				<Box m={1} mb={3}>
+					<TitleBar
+						TitleIcon={SettingsOutlinedIcon}
+						Title={"My Profile"}
+						sx={{ mx: 1 }}
+					/>
+
+					<Stack
+						direction='row'
+						flexWrap='wrap'
+						justifyContent='center'
+						sx={{ gap: "1em" }}>
+						<UserProfile
+							displayName={AuthUser.displayName}
+							photoURL={AuthUser.photoURL}
+							toggle={toggleAvatar}
+							flex='1 0'
+							maxWidth={{ xs: "100%", md: "calc(50% - 1em)" }}
+							minWidth={300}>
+							<UserProfileItem
+								primary={"Display Name"}
+								secondary={AuthUser.displayName ?? "Add a display name."}
+								Icon={PortraitOutlinedIcon}
+								action={toggleName}
+							/>
+							<UserProfileItem
+								primary={"Email"}
+								secondary={AuthUser.email ?? "Add an email."}
+								Icon={EmailOutlinedIcon}
+								action={toggleEmail}
+							/>
+							<UserProfileItem
+								primary={"Phone"}
+								secondary={AuthUser.phoneNumber ?? "Add a phone number."}
+								Icon={LocalPhoneOutlinedIcon}
+								action={togglePhone}
+							/>
+						</UserProfile>
+
+						<Box
+							flex='1 0'
+							minWidth={300}
+							maxWidth={{ xs: "100%", md: "calc(50% - 1em)" }}>
+							<List
+								disablePadding
+								sx={{ "& .MuiListItemButton-root:not(:last-child)": { mb: "1em" } }}>
+								<UserSettingsItem
+									primary={"Email Verification"}
+									secondary={"Verify your email address."}
+									Icon={<MarkEmailReadOutlinedIcon />}
+									onClick={() => toggleEmailVerify(true)}
+								/>
+								<UserSettingsItem
+									primary={"Password Reset"}
+									secondary={"Change your password."}
+									Icon={<PasswordIcon />}
+									onClick={() => toggleResetPass(true)}
+								/>
+								<UserSettingsItem
+									primary={"Push Notifications"}
+									secondary={"Receive notifications in compatible devices."}
+									Icon={<SecurityUpdateWarningOutlinedIcon />}
+									onClick={() => togglePushNotifs(true)}
+								/>
+								<UserSettingsItem
+									primary={"Add To Home Screen"}
+									secondary={"Add Agave to your home screen!"}
+									Icon={<AddToHomeScreenOutlinedIcon />}
+									onClick={() => togglePwa(true)}
+								/>
+								<Box
+									component='li'
+									display='flex'
+									justifyContent='center'
+									color='grey.600'>
+									<a href='#'>View our privacy policy.</a>
+								</Box>
+							</List>
+						</Box>
+					</Stack>
+				</Box>
+				<UpdateAvatarDialog auth={auth} toggle={toggleAvatar} open={updateAvatar} />
+				<UpdateNameDialog
+					auth={auth}
+					prev={AuthUser.displayName ?? ""}
+					user={AuthUser.firebaseUser}
+					open={updateName}
+					toggle={toggleName}
 				/>
-
-				<Stack
-					direction='row'
-					flexWrap='wrap'
-					justifyContent='center'
-					sx={{ gap: "1em" }}>
-					<UserProfile
-						displayName={AuthUser.displayName}
-						photoURL={AuthUser.photoURL}
-						toggle={toggleAvatar}
-						flex='1 0'
-						maxWidth={{ xs: "100%", md: "calc(50% - 1em)" }}
-						minWidth={300}>
-						<UserProfileItem
-							primary={"Display Name"}
-							secondary={AuthUser.displayName ?? "Add a display name."}
-							Icon={PortraitOutlinedIcon}
-							action={toggleName}
-						/>
-						<UserProfileItem
-							primary={"Email"}
-							secondary={AuthUser.email ?? "Add an email."}
-							Icon={EmailOutlinedIcon}
-							action={toggleEmail}
-						/>
-						<UserProfileItem
-							primary={"Phone"}
-							secondary={AuthUser.phoneNumber ?? "Add a phone number."}
-							Icon={LocalPhoneOutlinedIcon}
-							action={togglePhone}
-						/>
-					</UserProfile>
-
-					<Box
-						flex='1 0'
-						minWidth={300}
-						maxWidth={{ xs: "100%", md: "calc(50% - 1em)" }}>
-						<List
-							disablePadding
-							sx={{ "& .MuiListItemButton-root:not(:last-child)": { mb: "1em" } }}>
-							<UserSettingsItem
-								primary={"Email Verification"}
-								secondary={"Verify your email address."}
-								Icon={<MarkEmailReadOutlinedIcon />}
-								onClick={() => toggleEmailVerify(true)}
-							/>
-							<UserSettingsItem
-								primary={"Password Reset"}
-								secondary={"Change your password."}
-								Icon={<PasswordIcon />}
-								onClick={() => toggleResetPass(true)}
-							/>
-							<UserSettingsItem
-								primary={"Push Notifications"}
-								secondary={"Receive notifications in compatible devices."}
-								Icon={<SecurityUpdateWarningOutlinedIcon />}
-								onClick={() => togglePushNotifs(true)}
-							/>
-							<UserSettingsItem
-								primary={"Add To Home Screen"}
-								secondary={"Add Agave to your home screen!"}
-								Icon={<AddToHomeScreenOutlinedIcon />}
-								onClick={() => togglePwa(true)}
-							/>
-							<Box
-								component='li'
-								display='flex'
-								justifyContent='center'
-								color='grey.600'>
-								<a href='#'>View our privacy policy.</a>
-							</Box>
-						</List>
-					</Box>
-				</Stack>
-			</Box>
-			<UpdateAvatarDialog auth={auth} toggle={toggleAvatar} open={updateAvatar} />
-			<UpdateNameDialog
-				auth={auth}
-				prev={AuthUser.displayName ?? ""}
-				user={AuthUser.firebaseUser}
-				open={updateName}
-				toggle={toggleName}
-			/>
-			<UpdateEmailDialog auth={auth} open={updateEmail} toggle={toggleEmail} />
-			<UpdatePhoneDialog
-				user={AuthUser.firebaseUser}
-				auth={auth}
-				toggle={togglePhone}
-				open={updatePhone}
-			/>
-			<EmailVerificationDialog
-				user={AuthUser.firebaseUser}
-				toggle={toggleEmailVerify}
-				open={emailVerify}
-			/>
-			<PasswordResetDialog
-				auth={auth}
-				email={AuthUser.email}
-				toggle={toggleResetPass}
-				open={resetPass}
-			/>
-			<PushNotificationsDialog
-				toggle={togglePushNotifs}
-				open={pushNotifs}
-				uid={AuthUser.id}
-				togglePwa={togglePwa}
-			/>
-			<InstallAppDialog toggle={togglePwa} open={pwa} />
-		</AuthLayout>
+				<UpdateEmailDialog auth={auth} open={updateEmail} toggle={toggleEmail} />
+				<UpdatePhoneDialog
+					user={AuthUser.firebaseUser}
+					auth={auth}
+					toggle={togglePhone}
+					open={updatePhone}
+				/>
+				<EmailVerificationDialog
+					user={AuthUser.firebaseUser}
+					toggle={toggleEmailVerify}
+					open={emailVerify}
+				/>
+				<PasswordResetDialog
+					auth={auth}
+					email={AuthUser.email}
+					toggle={toggleResetPass}
+					open={resetPass}
+				/>
+				<PushNotificationsDialog
+					toggle={togglePushNotifs}
+					open={pushNotifs}
+					uid={AuthUser.id}
+					togglePwa={togglePwa}
+				/>
+				<InstallAppDialog toggle={togglePwa} open={pwa} />
+			</AuthLayout>
+		</AgaveLayout>
 	);
 };
 
