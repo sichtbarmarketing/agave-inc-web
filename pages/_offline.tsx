@@ -8,14 +8,14 @@ import { H2, H3, Paragraph } from "components/Typography";
 
 import WifiOffIcon from "@mui/icons-material/WifiOff";
 import AgaveSVG from "@public/assets/agave-graphics/dark-green/cactus3.svg";
-import AgaveLayout from "layouts/AgaveLayout";
+import AgaveLayoutWithoutUser from "layouts/AgaveLayoutWithoutUser";
 
 type OfflinePageProps = {};
 const OfflinePage: NextPage<OfflinePageProps> = () => {
 	const router = useRouter();
 
 	return (
-		<AgaveLayout>
+		<AgaveLayoutWithoutUser>
 			<AuthLayout>
 				<Container maxWidth='md' sx={{ mt: 3, mb: 6, minHeight: "50vh" }}>
 					<TitleBar TitleIcon={WifiOffIcon} Title={"You are offline."} />
@@ -57,7 +57,7 @@ const OfflinePage: NextPage<OfflinePageProps> = () => {
 					</Stack>
 				</Container>
 			</AuthLayout>
-		</AgaveLayout>
+		</AgaveLayoutWithoutUser>
 	);
 };
 

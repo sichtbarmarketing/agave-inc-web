@@ -23,7 +23,7 @@ import { getAuth, signInWithCustomToken } from "firebase/auth";
 import firebaseClient from "@firebaseUtils/firebaseClient";
 
 import AuthLayout from "layouts/AuthLayout";
-import AgaveLayout from "layouts/AgaveLayout";
+import AgaveLayoutWithoutUser from "layouts/AgaveLayoutWithoutUser";
 
 // Formik Initial Values
 const initialValues = {
@@ -92,7 +92,7 @@ const SignUpPage: NextPage<SignUpPageProps> = () => {
 		});
 
 	return (
-		<AgaveLayout>
+		<AgaveLayoutWithoutUser>
 			<AuthLayout>
 				<Box position='relative' py={4}>
 					<Container maxWidth='sm'>
@@ -225,7 +225,7 @@ const SignUpPage: NextPage<SignUpPageProps> = () => {
 					</Container>
 				</Box>
 			</AuthLayout>
-		</AgaveLayout>
+		</AgaveLayoutWithoutUser>
 	);
 };
 
